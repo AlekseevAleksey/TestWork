@@ -1,14 +1,33 @@
+import java.lang.*;
 
 public class Analyzer {
 
     public static void main(String[] args) {
-
-        TextAnalyzer a = new KeyWord().new SpamAnalyzer(new String[] {"spam","branch"});
-        TextAnalyzer b = new KeyWord().new NegativeTextAnalyzer();
-        TextAnalyzer c = new KeyWord().new TooLongTextAnalyzer(16);
-        System.out.println(KeyWord.checkLabels(new TextAnalyzer[]{a, b, c}, "text for testing"));
+        RobotConnectionManager robotConnectionManager = new RobotConnectionManagerImpl(null);
+        moveRobot(robotConnectionManager, 1, 1);
     }
 
+    public static void moveRobot(RobotConnectionManager robotConnectionManager, int toX, int toY) {
+        // your implementation here
+        boolean success = false;
 
+        for (int i=0; i<3;i++) {
+            if (!success) {
+                try (RobotConnection connection = robotConnectionManager.getConnection()) {
+                    connection.moveRobotTo(toX,toY);
+                    success = true;
+                } catch (RobotConnectionException e){
+                    if (i ==2 ) {
+                        throw e;
+                    }
+                } catch (Exception ex) {
+                    throw ex;
+                }
+            } else {
+                return;
+            }
+        }
+
+    }
 
 }
